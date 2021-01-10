@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Edit</h1>
+<!-- edit view is not rendering dynamically -->
+<form method="POST" action="{% url 'edit' task.id %}">
+  {% csrf_token %}
+  <input name="task" type="text" value="{{task.task}}" placeholder="task">
+  <!-- Remove the below line when imlemented authentication -->
+  <input name="user_name" type="text" value="{{task.user_name}}" placeholder="user name">
+  <input name="due_date" type="datetime-local">
+  <button type="submit">Edit</button>
+</form>
+{% endblock %}
