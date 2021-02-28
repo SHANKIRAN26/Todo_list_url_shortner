@@ -1,14 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Edit</h1>
+<h1 class="text-center">Edit</h1>
 <!-- edit view is not rendering dynamically -->
-<form method="POST" action="{% url 'edit' task.id %}">
-  {% csrf_token %}
-  <input name="task" type="text" value="{{task.task}}" placeholder="task">
-  <!-- Remove the below line when imlemented authentication -->
-  <input name="user_name" type="text" value="{{task.user_name}}" placeholder="user name">
-  <input name="due_date" type="datetime-local">
-  <button type="submit">Edit</button>
-</form>
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <form method="POST" action="{% url 'edit' task.id %}">
+      {% csrf_token %}
+      <input class="form-control mb-2" name="task" value="{{task.task}}" type="text" placeholder="task">
+      <!-- Remove the below line when imlemented authentication -->
+      <input class="form-control mb-2" name="user_name" value="{{task.user_name}}" type="text" placeholder="user name">
+      <input class="form-control mb-2" name="due_date" value="{{ date }}" type="datetime-local">
+      <input type="checkbox" name="done" {% if task.done %} checked {% endif %}>
+      <label>Done</label>
+      <div class="d-grid col-lg-6 mx-auto">
+        <button class="btn btn-outline-success" type="submit">Edit</button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}

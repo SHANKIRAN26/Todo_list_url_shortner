@@ -1,23 +1,46 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Tasks</h1>
+<h1 class="text-center">Tasks</h1>
 <ul>
   {% for task in tasks %}
-  <li>{{task.task}}</li>
-  <li>{{task.id}}</li>
-  <!-- <a href="{% url 'edit' task.id %}">Edit</a> -->
-  <a href="{% url 'edit' task.id %}">Edit</a>
-  <a href="{% url 'delete' task.id %}">Delete</a>
+  <div class="container my-2">
+    <div class="row justify-content-center">
+      <div class="col-lg-6">
+        {% if task.done %}
+        <h3 class="text-decoration-line-through">{{task.task}} - {{task.user_name}}</h3>
+        <h6>Due Date: {{task.due_date}}</h6>
+        {% endif %}
+        {% if task.due_date < current_date_time and not task.done %}
+        <h3 class="text-danger">{{task.task}} - {{task.user_name}}</h3>
+        <h6>Due Date: {{task.due_date}}</h6>
+        {% elif task.due_date > current_date_time and not task.done %}
+        <h3 class="">{{task.task}} - {{task.user_name}}</h3>
+        <h6>Due Date: {{task.due_date}}</h6>
+        {% endif %}
+        <div class="">
+          <a class="btn btn-info" href="{% url 'edit' task.id %}">Edit</a>
+          <a class="btn btn-danger" href="{% url 'delete' task.id %}">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
   {% endfor %}
 </ul>
 <p>{% url 'home' %}</p>
-<form method="POST" action="{% url 'home' %}">
-  {% csrf_token %}
-  <input name="task" type="text" placeholder="task">
-  <!-- Remove the below line when imlemented authentication -->
-  <input name="user_name" type="text" placeholder="user name">
-  <input name="due_date" type="datetime-local">
-  <button type="submit">Add</button>
-</form>
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <form method="POST" action="{% url 'home' %}">
+      {% csrf_token %}
+      <input class="form-control mb-2" name="task" type="text" placeholder="task">
+      <!-- Remove the below line when imlemented authentication -->
+      <input class="form-control mb-2" name="user_name" type="text" placeholder="user name">
+      <input class="form-control mb-2" name="due_date" type="datetime-local">
+      
+      <div class="d-grid col-lg-6 mx-auto">
+        <button class="btn btn-outline-success" type="submit">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}

@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Edit</h1>
 <!-- edit view is not rendering dynamically -->
-<p>Are you sure you want to delete {{ task.task }}</p>
-<form method="POST" action="{% url 'delete' task.id %}">
-  {% csrf_token %}
-  <a href="{% url 'home' %}">cancel</a>
-  <button type="submit">Delete</button>
-</form>
+<div class="justify-content-center">
+
+</div>
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <p>Are you sure you want to delete {{ task.task }}</p>
+    <form method="POST" action="{% url 'delete' task.id %}">
+      {% csrf_token %}
+      <a class="btn btn-info" href="{% url 'home' %}">cancel</a>
+      <button class="btn btn-danger" type="submit">Delete</button>
+    </form>
+  </div>
+</div>
 {% endblock %}
