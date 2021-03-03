@@ -1,10 +1,23 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
-<h1 class="text-center">Tasks</h1>
+<h1 class="text-center">Add Task</h1>
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <form method="POST" action="{% url 'home' %}">
+      {% csrf_token %}
+      <input class="form-control mb-2" name="task" type="text" placeholder="task">
+      <input class="form-control mb-2" name="due_date" type="datetime-local">
+      
+      <div class="d-grid col-lg-6 mx-auto">
+        <button class="btn btn-outline-success" type="submit">Add</button>
+      </div>
+    </form>
+  </div>
+</div>
+<h3 class="text-center my-2">My Tasks</h3>
 <ul>
   {% for task in tasks %}
-  <div class="container my-2">
     <div class="row justify-content-center">
       <div class="col-lg-6">
         {% if task.done %}
@@ -15,7 +28,7 @@
         <h3 class="text-danger">{{task.task}} - {{task.user_name}}</h3>
         <h6>Due Date: {{task.due_date}}</h6>
         {% elif task.due_date > current_date_time and not task.done %}
-        <h3 class="">{{task.task}} - {{task.user_name}}</h3>
+        <h3 class="">{{task.task}}</h3>
         <h6>Due Date: {{task.due_date}}</h6>
         {% endif %}
         <div class="">
@@ -24,23 +37,8 @@
         </div>
       </div>
     </div>
-  </div>
   {% endfor %}
 </ul>
 <p>{% url 'home' %}</p>
-<div class="row justify-content-center">
-  <div class="col-lg-6">
-    <form method="POST" action="{% url 'home' %}">
-      {% csrf_token %}
-      <input class="form-control mb-2" name="task" type="text" placeholder="task">
-      <!-- Remove the below line when imlemented authentication -->
-      <input class="form-control mb-2" name="user_name" type="text" placeholder="user name">
-      <input class="form-control mb-2" name="due_date" type="datetime-local">
-      
-      <div class="d-grid col-lg-6 mx-auto">
-        <button class="btn btn-outline-success" type="submit">Add</button>
-      </div>
-    </form>
-  </div>
-</div>
+
 {% endblock %}

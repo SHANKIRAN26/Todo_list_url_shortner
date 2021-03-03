@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # my apps
     'tasks.apps.TasksConfig',
     'url_shortner.apps.UrlShortnerConfig',
+    'accounts.apps.AccountsConfig'
 ]
 
 MIDDLEWARE = [

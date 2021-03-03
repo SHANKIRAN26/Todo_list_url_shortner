@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1 class="text-center">Enter the url</h1>
+<!-- edit view is not rendering dynamically -->
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <form method="POST" action="{% url 'url_home' %}">
+      {% csrf_token %}
+      <input class="form-control mb-2" name="redirect_url" value="" type="url" placeholder="Ex: www.google.com">
+      <!-- Remove the below line when imlemented authentication -->
+      <div class="d-grid col-lg-6 mx-auto">
+        <button class="btn btn-outline-success" type="submit">shortnen</button>
+      </div>
+    </form>
+    {% if domain %}
+      <h6 class="text-center">Save the url</h6>
+      {{ domain }}{{ shortened_url_slug }}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

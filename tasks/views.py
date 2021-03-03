@@ -1,36 +1,35 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Todolist
 from datetime import datetime
+from django.http import HttpResponseNotFound
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
+@login_required(login_url='login')
 def home(request):
     if request.method == "POST":
         print(request.POST["task"])
         task = request.POST["task"]
-        user_name = request.POST["user_name"]
         due_date = request.POST["due_date"]
-
-        create_task = Todolist(task=task, user_name=user_name, due_date=due_date)
+        user_id = request.user
+        create_task = Todolist(task=task, due_date=due_date, user_id=user_id)
         create_task.save()
         print('Saved')
         return redirect('home')
-    tasks = Todolist.objects.all()
+    user_id = request.user
+    tasks = Todolist.objects.filter(user_id=user_id)
     now = datetime.now(timezone.utc)
-    print(type(tasks[1].due_date),tasks[2].due_date)
-    print(type(now), now)
-    # print(tasks[1].due_date > now)
-    print(tasks[2].due_date < now)
-    # print(tasks)
     data = {
             'tasks': tasks,
             'current_date_time': now,
     }
-    # print(data)
     return render(request, 'tasks/home.html', data)
 
+@login_required(login_url='login')
 def edit(request, id):
     if request.method == "POST":
-        # print(request.POST["done"])
         update_task = get_object_or_404(Todolist, pk=id)
         task = request.POST["task"]
         user_name = request.POST["user_name"]
@@ -41,34 +40,36 @@ def edit(request, id):
                 done = True
         except:
             done = False
-        # update_task = Todolist(task=task, user_name=user_name, due_date=due_date)
+        user_id = request.user
         update_task.task = task
-        update_task.user_name = user_name
+        # update_task.user_name = user_name
         update_task.due_date = due_date
+        update_task.user_id = user_id
         update_task.done = done
         update_task.save()
         print('Saved')
         return redirect('home')
+    current_user = User.objects.get(todolist__id = id)
+    if current_user.id != request.user.id:
+        return HttpResponseNotFound()
     task = get_object_or_404(Todolist, pk=id)
     date = task.due_date.isoformat("T")[:-9]
     now = datetime.now().isoformat("T")[:-9]
-    print(now)
-    print("task",task.due_date)
-    # 1990-12-31T23:59:60Z
-    print(date)
-    print(now<date)
     data = {
         'task': task,
         'date': date,
     }
-    print(data)
     return render(request, 'tasks/edit.html', data)
 
+@login_required(login_url='login')
 def delete(request, id):
     task = get_object_or_404(Todolist, pk=id)
     if request.method == "POST":
         task.delete()
         return redirect('home')
+    current_user = User.objects.get(todolist__id = id)
+    if current_user.id != request.user.id:
+        return HttpResponseNotFound()
     data = {
         'task': task
     }

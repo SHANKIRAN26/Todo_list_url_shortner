@@ -19,4 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("tasks.urls")),
+    path("url_shortner/", include("url_shortner.urls")),
+    path("accounts/", include("accounts.urls")),
 ]
