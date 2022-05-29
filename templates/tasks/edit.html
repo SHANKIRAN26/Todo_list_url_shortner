@@ -9,7 +9,8 @@
       {% csrf_token %}
       <input class="form-control mb-2" name="task" value="{{task.task}}" type="text" placeholder="task">
       <!-- Remove the below line when imlemented authentication -->
-      <input class="form-control mb-2" name="user_name" value="{{task.user_name}}" type="text" placeholder="user name">
+      {% comment %} <input class="form-control mb-2" name="user_name" value="{{task.user_name}}" type="text" placeholder="user name"> {% endcomment %}
+      <input class="form-control mb-2" type="url" value={{task.url}} name="url" id="">
       <input class="form-control mb-2" name="due_date" value="{{ date }}" type="datetime-local">
       <input type="checkbox" name="done" {% if task.done %} checked {% endif %}>
       <label>Done</label>

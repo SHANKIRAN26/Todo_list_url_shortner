@@ -6,8 +6,9 @@
   <div class="col-lg-6">
     <form method="POST" action="{% url 'home' %}">
       {% csrf_token %}
-      <input class="form-control mb-2" name="task" type="text" placeholder="task">
-      <input class="form-control mb-2" name="due_date" type="datetime-local">
+      <input class="form-control mb-2" name="task" type="text" placeholder="task" required>
+      <input class="form-control mb-2" type="url" name="url" placeholder="Enter the url" id="" required>
+      <input class="form-control mb-2" name="due_date" type="datetime-local" required>
       
       <div class="d-grid col-lg-6 mx-auto">
         <button class="btn btn-outline-success" type="submit">Add</button>
@@ -21,14 +22,17 @@
     <div class="row justify-content-center">
       <div class="col-lg-6">
         {% if task.done %}
-        <h3 class="text-decoration-line-through">{{task.task}} - {{task.user_name}}</h3>
+        <h3 class="text-decoration-line-through">{{task.task}}</h3>
+        <a class="" href={{task.url}}>{{ domain }}{{ task.slug }}</a>
         <h6>Due Date: {{task.due_date}}</h6>
         {% endif %}
         {% if task.due_date < current_date_time and not task.done %}
-        <h3 class="text-danger">{{task.task}} - {{task.user_name}}</h3>
+        <h3 class="text-danger">{{task.task}}</h3>
+        <a class="" href={{task.url}}>{{ domain }}{{ task.slug }}</a>
         <h6>Due Date: {{task.due_date}}</h6>
         {% elif task.due_date > current_date_time and not task.done %}
         <h3 class="">{{task.task}}</h3>
+        <a class="" href={{task.url}}>{{ domain }}{{ task.slug }}</a>
         <h6>Due Date: {{task.due_date}}</h6>
         {% endif %}
         <div class="">
